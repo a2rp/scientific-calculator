@@ -48,14 +48,6 @@ Production-quality scientific calculator built with **React (Vite)** and **style
 
 ---
 
-## 🧱 Tech Stack
-
--   React (Vite)
--   styled-components
--   react-router-dom (BrowserRouter)
--   @tolgee/react (i18n)
--   localStorage-backed “API” layer
-
 ## 🚀 Getting Started
 
 ```bash
