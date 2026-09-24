@@ -200,7 +200,7 @@ function tokenize(expr) {
             while (j < s.length && isAlpha(s[j])) j++;
             const word = s.slice(i, j);
 
-            if (CONSTS.hasOwnProperty(word)) {
+            if (Object.prototype.hasOwnProperty.call(CONSTS, word)) {
                 if (
                     lastType === "num" ||
                     lastType === ")" ||
@@ -212,7 +212,7 @@ function tokenize(expr) {
                 i = j;
                 continue;
             }
-            if (FUNS.hasOwnProperty(word)) {
+            if (Object.prototype.hasOwnProperty.call(FUNS, word)) {
                 // implicit multiply before a function call
                 if (
                     lastType === "num" ||
@@ -372,6 +372,6 @@ export function canEvaluate(expr) {
     const opens = (s.match(/\(/g) || []).length;
     const closes = (s.match(/\)/g) || []).length;
     if (opens !== closes) return false;
-    if (/[0-9.](e|E)([+\-])?$/.test(s)) return false;
+    if (/[0-9.](e|E)([+-])?$/.test(s)) return false;
     return true;
 }

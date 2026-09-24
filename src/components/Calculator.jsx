@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Styled } from "../styled.js";
-import { compute, tryCompute, canEvaluate } from "../engine/mathEngine.js";
+import { tryCompute, canEvaluate } from "../engine/mathEngine.js";
 
 const OPERATORS = ["+", "−", "×", "÷", "^"];
 
@@ -113,7 +113,7 @@ export function Calculator() {
         { label: "cos", onClick: () => appendFn("cos") },
         { label: "tan", onClick: () => appendFn("tan") },
         { label: "√", onClick: () => appendFn("sqrt") },
-    ]), [angleMode, expr]);
+    ]), [angleMode, appendFn, onToggleMode]);
 
     const sciRow2 = useMemo(() => ([
         { label: "asin", onClick: () => appendFn("asin") },
@@ -121,7 +121,7 @@ export function Calculator() {
         { label: "atan", onClick: () => appendFn("atan") },
         { label: "ln", onClick: () => appendFn("ln") },
         { label: "log", onClick: () => appendFn("log") },
-    ]), [expr]);
+    ]), [appendFn]);
 
     const sciRow3 = useMemo(() => ([
         { label: "π", onClick: () => appendConst("π") },
@@ -130,7 +130,7 @@ export function Calculator() {
         { label: "%", onClick: () => append("%") },
         { label: "abs", onClick: () => appendFn("abs") },
         { label: "EXP", variant: "acc", onClick: appendExp }, // ← NEW
-    ]), [expr]);
+    ]), [append, appendConst, appendFn, appendExp]);
 
 
     // Basic keys
@@ -159,7 +159,7 @@ export function Calculator() {
         { label: ".", onClick: () => append(".") },
         { label: "^", variant: "op", onClick: () => append("^") },
         { label: "+", variant: "op", onClick: () => append("+") },
-    ]), [expr]);
+    ]), [append, onClear, onDelete, onEqual]);
 
     // --- Keyboard support ---
     useEffect(() => {
@@ -202,7 +202,7 @@ export function Calculator() {
         };
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
-    }, [expr, onEqual]);
+    }, [expr, append, appendConst, onEqual, onDelete, onClear, onToggleMode]);
 
     // load once
     useEffect(() => {
@@ -243,17 +243,7 @@ export function Calculator() {
                         {k.label}
                     </Styled.Key>
                 ))}
-            </Styled.KeysGrid>
-            <Styled.KeysGrid $cols={6}>
-                {sciRow3.map((k, i) => (
-                    <Styled.Key key={"s3-" + i} onClick={k.onClick} $variant={k.variant}>
-                        {k.label}
-                    </Styled.Key>
-                ))}
-            </Styled.KeysGrid>
-
-
-            {/* Basic keypad */}
+            </Styled.KeysGrid>{/* Basic keypad */}
             <Styled.Keys>
                 {keys.map((k, i) => (
                     <Styled.Key key={i} onClick={k.onClick} $variant={k.variant}>
